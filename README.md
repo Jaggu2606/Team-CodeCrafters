@@ -150,20 +150,28 @@ For edge deployment, we also trained a lightweight version:
 
 ### Results
 
-| Model | Parameters | Val IoU | Val Dice | Val Accuracy |
-|-------|-----------|---------|----------|-------------|
-| **Full (ConvNeXt-Tiny)** | 41.7M | **0.4933** | **0.6612** | **84.0%** |
-| Lite (MobileNetV3-Small) | 3.2M | 0.4121 | 0.5675 | 81.6% |
+| Model | Parameters | Val IoU | Val Dice | Val Accuracy | Inference FPS |
+|-------|-----------|---------|----------|-------------|---------------|
+| **Full (ConvNeXt-Tiny)** | 41.7M | **0.4933** | **0.6612** | **84.0%** | 50-70 FPS |
+| Lite (MobileNetV3-Small) | 3.2M | 0.4121 | 0.5675 | 81.6% | 100+ FPS |
+
+#### Test Set Results (Full Model, with TTA)
+
+| Metric | Score |
+|--------|-------|
+| **Mean IoU** | **0.3187** |
+| **Mean Dice** | **0.4775** |
+| **Pixel Accuracy** | **65.5%** |
 
 #### Per-Class Test IoU (Full Model, with TTA)
-| Class | IoU |
-|-------|-----|
-| Sky | 0.982 |
-| Landscape | 0.596 |
-| Dry Grass | 0.441 |
-| Trees | 0.379 |
-| Dry Bushes | 0.267 |
-| Rocks | 0.068 |
+| Class | IoU | Dice |
+|-------|-----|------|
+| Sky | 0.982 | 0.991 |
+| Landscape | 0.596 | 0.743 |
+| Dry Grass | 0.441 | 0.611 |
+| Trees | 0.379 | 0.532 |
+| Dry Bushes | 0.267 | 0.386 |
+| Rocks | 0.068 | 0.124 |
 
 ---
 
@@ -171,13 +179,18 @@ For edge deployment, we also trained a lightweight version:
 
 ```
 Offroad_Segmentation_Scripts/
-    train_segmentation.py    # Training script (full + lite models)
-    test_segmentation.py     # Evaluation on test set with metrics & visualizations
-    live_cam.py              # Real-time webcam/video inference with overlay
-    visualize.py             # Visualization utilities
-    train_stats/             # Training curves and metrics
-    test_results_full/       # Test predictions and comparisons (full model)
-    test_results_lite/       # Test predictions and comparisons (lite model)
+    train_segmentation.py      # Training script (full + lite models)
+    test_segmentation.py       # Evaluation on test set with metrics & visualizations
+    live_cam.py                # Real-time webcam/video inference with overlay + refinement
+    ablation_study.py          # Ablation studies for architecture components
+    cluster_analysis.py        # Cluster analysis of segmentation outputs
+    generate_visualizations.py # Generate result visualization charts
+    visualize.py               # Visualization utilities
+    train_stats/               # Training curves and metrics
+    test_results_full/         # Test predictions and comparisons (full model)
+    test_results_lite/         # Test predictions and comparisons (lite model)
+    results_visualizations/    # Result charts and plots
+RESULTS.md                     # Comprehensive results and ablation studies
 ```
 
 ---
@@ -225,6 +238,9 @@ python live_cam.py --model_path best_model_full.pth --video path/to/video.mp4
 
 # Save output video (no GUI required)
 python live_cam.py --model_path best_model_full.pth --video input.mp4 --save_output output.mp4
+
+# With CV2 mask refinement (bilateral filter + morphology for smoother boundaries)
+python live_cam.py --model_path best_model_full.pth --video input.mp4 --save_output output.mp4 --refine
 
 # Lite model (faster)
 python live_cam.py --model_path best_model_lite.pth --lite

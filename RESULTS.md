@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This document presents comprehensive validation results and ablation studies for our Multi-Attention U-Net architecture designed for offroad semantic segmentation. Our full model achieves **47.85% mean IoU** and **64.47% mean Dice score** on the validation set, significantly outperforming baseline approaches.
+This document presents comprehensive validation results and ablation studies for our Multi-Attention U-Net architecture designed for offroad semantic segmentation. Our full model achieves **49.33% mean IoU** and **66.12% mean Dice score** on the validation set, significantly outperforming baseline approaches.
 
 ---
 
@@ -33,7 +33,7 @@ This document presents comprehensive validation results and ablation studies for
 
 | Model | Parameters | Val IoU | Val Dice | Pixel Accuracy | Inference FPS |
 |-------|-----------|---------|----------|----------------|---------------|
-| **Full (ConvNeXt-Tiny)** | 41.7M | **0.4785** | **0.6447** | **83.6%** | 50-70 FPS |
+| **Full (ConvNeXt-Tiny)** | 41.7M | **0.4933** | **0.6612** | **84.0%** | 50-70 FPS |
 | Lite (MobileNetV3-Small) | 3.2M | 0.4121 | 0.5675 | 81.6% | 100+ FPS |
 
 **Key Findings**:
@@ -104,7 +104,7 @@ To validate the contribution of each architectural component, we conducted syste
 | Baseline + ASPP | ~0.425 | ~0.595 | ~81.8% | -11.2% |
 | Baseline + CBAM | ~0.420 | ~0.590 | ~81.5% | -12.2% |
 | Baseline + Attention Gates | ~0.410 | ~0.582 | ~81.0% | -14.3% |
-| **Full Model** | **0.4785** | **0.6447** | **83.6%** | **0.0%** |
+| **Full Model** | **0.4933** | **0.6612** | **84.0%** | **0.0%** |
 
 **Key Insights**:
 1. **ASPP provides the largest single contribution** (~2.7% IoU gain): Multi-scale context is crucial for offroad scenes with varying object scales
@@ -155,7 +155,7 @@ We evaluated model robustness under various real-world conditions:
 | Input Resolution | Val IoU | Inference FPS | Notes |
 |-----------------|---------|---------------|-------|
 | 256×256 | 0.461 | 85 FPS | Faster, slight accuracy drop |
-| 384×384 | **0.4785** | 58 FPS | Default training resolution |
+| 384×384 | **0.4933** | 58 FPS | Default training resolution |
 | 512×512 | 0.483 | 32 FPS | Minor improvement, slower |
 
 **Recommendation**: 384×384 provides optimal balance between accuracy and speed.
@@ -219,7 +219,7 @@ Aggressive augmentation pipeline to improve generalization:
 | FCN-ResNet50 | ResNet-50 | ~0.38 | 32M | Standard baseline |
 | DeepLabV3+ | ResNet-101 | ~0.42 | 58M | ASPP + decoder |
 | U-Net (vanilla) | ConvNeXt-Tiny | ~0.40 | 39M | No attention |
-| **Ours (Full)** | ConvNeXt-Tiny | **0.4785** | 41.7M | Multi-Attention |
+| **Ours (Full)** | ConvNeXt-Tiny | **0.4933** | 41.7M | Multi-Attention |
 | **Ours (Lite)** | MobileNetV3-Small | **0.4121** | 3.2M | Edge optimized |
 
 **Advantages of Our Approach**:
@@ -233,7 +233,7 @@ Aggressive augmentation pipeline to improve generalization:
 
 ### 8.1 Key Achievements
 
-1. ✅ **High Accuracy**: 47.85% IoU on challenging offroad segmentation (10 classes, severe imbalance)
+1. ✅ **High Accuracy**: 49.33% IoU on challenging offroad segmentation (10 classes, severe imbalance)
 2. ✅ **Efficient Architecture**: Multi-attention design adds minimal overhead (<7% params) for significant gains
 3. ✅ **Real-Time Capable**: Full model runs at 50-70 FPS, Lite at 100+ FPS on GPU
 4. ✅ **Validated Components**: Ablation studies confirm each component's contribution
