@@ -5,8 +5,8 @@
 Offroad_Segmentation_Training_Dataset/
 Offroad_Segmentation_testImages/
 
-# Output videos
-output_video_*.mp4
+# Videos (too large for GitHub)
+*.mp4
 *.mov
 
 # Test result masks (keep comparisons + metrics only)

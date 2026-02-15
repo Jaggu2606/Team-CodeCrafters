@@ -1,0 +1,43 @@
+CLUSTER ANALYSIS REPORT
+================================================================================
+
+Video: ../vecteezy_output_segmented.mp4
+Total Frames Analyzed: 103
+Number of Clusters: 5
+
+Overall Class Distribution:
+--------------------------------------------------------------------------------
+  Background          :  99.99%
+  Trees               :   0.00%
+  Lush Bushes         :   0.01%
+  Dry Grass           :   0.00%
+  Dry Bushes          :   0.00%
+  Ground Clutter      :   0.00%
+  Logs                :   0.00%
+  Rocks               :   0.00%
+  Landscape           :   0.00%
+  Sky                 :   0.00%
+
+================================================================================
+Cluster Analysis:
+--------------------------------------------------------------------------------
+
+Cluster 0 (31 frames):
+  Dominant Classes: Background, Lush Bushes, Rocks
+  Top class percentages: Background: 100.0%, Lush Bushes: 0.0%, Rocks: 0.0%
+
+Cluster 1 (5 frames):
+  Dominant Classes: Background, Lush Bushes, Rocks
+  Top class percentages: Background: 100.0%, Lush Bushes: 0.0%, Rocks: 0.0%
+
+Cluster 2 (30 frames):
+  Dominant Classes: Background, Lush Bushes, Rocks
+  Top class percentages: Background: 100.0%, Lush Bushes: 0.0%, Rocks: 0.0%
+
+Cluster 3 (31 frames):
+  Dominant Classes: Background, Lush Bushes, Rocks
+  Top class percentages: Background: 100.0%, Lush Bushes: 0.0%, Rocks: 0.0%
+
+Cluster 4 (6 frames):
+  Dominant Classes: Background, Lush Bushes, Rocks
+  Top class percentages: Background: 100.0%, Lush Bushes: 0.0%, Rocks: 0.0%
