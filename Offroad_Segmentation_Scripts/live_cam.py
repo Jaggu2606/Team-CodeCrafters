@@ -341,6 +341,42 @@ def mask_to_color(mask):
     return color_mask
 
 
+def refine_mask(logits, orig_frame, orig_w, orig_h):
+    """Refine segmentation mask using guided filtering on softmax probabilities.
+
+    Uses the original image as a guide to sharpen boundaries:
+    1. Upsample softmax probabilities to original resolution
+    2. Apply bilateral filter guided by original image to smooth while preserving edges
+    3. Morphological cleanup to remove small noise regions
+    """
+    # Get softmax probabilities
+    probs = F.softmax(logits, dim=1).squeeze(0).cpu().numpy()  # (C, H, W)
+
+    # Resize original frame to guide resolution
+    guide = cv2.resize(orig_frame, (orig_w, orig_h))
+    guide_gray = cv2.cvtColor(guide, cv2.COLOR_BGR2GRAY)
+
+    # Upsample each class probability to original resolution
+    refined_probs = np.zeros((N_CLASSES, orig_h, orig_w), dtype=np.float32)
+    for c in range(N_CLASSES):
+        # Bilinear upscale of probability map
+        prob_map = cv2.resize(probs[c], (orig_w, orig_h), interpolation=cv2.INTER_LINEAR)
+        # Joint bilateral filter: smooth prob map guided by image edges
+        prob_uint8 = (prob_map * 255).astype(np.uint8)
+        filtered = cv2.bilateralFilter(prob_uint8, d=9, sigmaColor=75, sigmaSpace=75)
+        refined_probs[c] = filtered.astype(np.float32) / 255.0
+
+    # Argmax to get final mask
+    mask = np.argmax(refined_probs, axis=0).astype(np.uint8)
+
+    # Morphological cleanup: remove small regions
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+
+    return mask
+
+
 def preprocess_frame(frame):
     """Convert BGR frame to normalized tensor."""
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -384,6 +420,8 @@ def main():
                         help='Use lightweight MobileNetV3-Small model')
     parser.add_argument('--save_output', type=str, default=None,
                         help='Save output video to this path (no GUI needed)')
+    parser.add_argument('--refine', action='store_true',
+                        help='Apply CV2 post-processing for finer masks (bilateral filter + morphology)')
     args = parser.parse_args()
 
     global IMG_SIZE
@@ -456,12 +494,16 @@ def main():
         with torch.no_grad():
             logits = model(tensor)
 
-        pred = torch.argmax(logits, dim=1).squeeze(0).cpu().numpy().astype(np.uint8)
-
-        # Colorize and resize to original frame size
-        color_mask = mask_to_color(pred)
-        color_mask = cv2.resize(color_mask, (orig_w, orig_h), interpolation=cv2.INTER_NEAREST)
-        color_mask_bgr = cv2.cvtColor(color_mask, cv2.COLOR_RGB2BGR)
+        if args.refine:
+            # Refined mask: bilateral filter + morphology at full resolution
+            pred = refine_mask(logits, frame, orig_w, orig_h)
+            color_mask = mask_to_color(pred)
+            color_mask_bgr = cv2.cvtColor(color_mask, cv2.COLOR_RGB2BGR)
+        else:
+            pred = torch.argmax(logits, dim=1).squeeze(0).cpu().numpy().astype(np.uint8)
+            color_mask = mask_to_color(pred)
+            color_mask = cv2.resize(color_mask, (orig_w, orig_h), interpolation=cv2.INTER_NEAREST)
+            color_mask_bgr = cv2.cvtColor(color_mask, cv2.COLOR_RGB2BGR)
 
         # Overlay segmentation on frame
         overlay = cv2.addWeighted(frame, 1.0 - args.alpha, color_mask_bgr, args.alpha, 0)

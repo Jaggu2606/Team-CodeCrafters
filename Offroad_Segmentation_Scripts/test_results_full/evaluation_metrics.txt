@@ -1,32 +1,32 @@
 EVALUATION RESULTS
 ==================================================
-Mean IoU:          0.2964
-Mean Dice:         0.4511
-Pixel Accuracy:    0.6456
+Mean IoU:          0.3187
+Mean Dice:         0.4775
+Pixel Accuracy:    0.6548
 ==================================================
 
 Per-Class IoU:
 ----------------------------------------
   Background          : 0.0000
-  Trees               : 0.2781
-  Lush Bushes         : 0.0022
-  Dry Grass           : 0.4085
-  Dry Bushes          : 0.2940
+  Trees               : 0.3789
+  Lush Bushes         : 0.0009
+  Dry Grass           : 0.4410
+  Dry Bushes          : 0.2669
   Ground Clutter      : 0.0000
   Logs                : 0.0000
-  Rocks               : 0.0783
-  Landscape           : 0.5587
-  Sky                 : 0.9714
+  Rocks               : 0.0679
+  Landscape           : 0.5955
+  Sky                 : 0.9816
 
 Per-Class Dice:
 ----------------------------------------
-  Background          : 0.1912
-  Trees               : 0.4142
-  Lush Bushes         : 0.0554
-  Dry Grass           : 0.5788
-  Dry Bushes          : 0.4387
+  Background          : 0.3613
+  Trees               : 0.5322
+  Lush Bushes         : 0.0516
+  Dry Grass           : 0.6107
+  Dry Bushes          : 0.3862
   Ground Clutter      : 0.0000
-  Logs                : 0.9920
-  Rocks               : 0.1412
-  Landscape           : 0.7140
-  Sky                 : 0.9854
+  Logs                : 0.9760
+  Rocks               : 0.1238
+  Landscape           : 0.7426
+  Sky                 : 0.9907

@@ -152,18 +152,18 @@ For edge deployment, we also trained a lightweight version:
 
 | Model | Parameters | Val IoU | Val Dice | Val Accuracy |
 |-------|-----------|---------|----------|-------------|
-| **Full (ConvNeXt-Tiny)** | 41.7M | **0.4785** | **0.6447** | **83.6%** |
+| **Full (ConvNeXt-Tiny)** | 41.7M | **0.4933** | **0.6612** | **84.0%** |
 | Lite (MobileNetV3-Small) | 3.2M | 0.4121 | 0.5675 | 81.6% |
 
-#### Per-Class Test IoU (Full Model)
+#### Per-Class Test IoU (Full Model, with TTA)
 | Class | IoU |
 |-------|-----|
-| Sky | 0.971 |
-| Landscape | 0.559 |
-| Dry Grass | 0.409 |
-| Dry Bushes | 0.294 |
-| Trees | 0.278 |
-| Rocks | 0.078 |
+| Sky | 0.982 |
+| Landscape | 0.596 |
+| Dry Grass | 0.441 |
+| Trees | 0.379 |
+| Dry Bushes | 0.267 |
+| Rocks | 0.068 |
 
 ---
 
