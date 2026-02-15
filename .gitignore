@@ -1,0 +1,33 @@
+# Model weights (too large for GitHub)
+*.pth
+
+# Dataset (not part of repo)
+Offroad_Segmentation_Training_Dataset/
+Offroad_Segmentation_testImages/
+
+# Output videos
+output_video_*.mp4
+*.mov
+
+# Test result masks (keep comparisons + metrics only)
+**/masks/
+**/masks_color/
+
+# Predictions folder
+predictions/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# TensorBoard logs
+runs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
